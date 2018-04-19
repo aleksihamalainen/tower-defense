@@ -2,38 +2,32 @@ package Main
 
 import java.awt._
 import scala.io._
-import scala.collection.mutable.Buffer
 
 object Map {
-  
-  val width = 15
+
+  val width = 16
   val height = 10
-  val blockSize = 52
-  
-  val blocks = Array.ofDim[Block](width, height)
-  
-  //val lines = Source.fromFile("resource/map.txt").getLines()
-  
-  /*def loadMap = {
-    for (line <- lines) {
-      
-    }
-  }*/
-  
+  val blockSize = 50
+  val road = 1
+  val grass = 0
+  val roadEnd = 2
+
+  val blocks = Array.ofDim[Block](height, width)
+
   def createMap = {
-    for (x <- 0 until blocks.size) {
-      for (y <- 0 until blocks(x).size) {
-        blocks(x)(y) = new Block(x*blockSize, y*blockSize, blockSize, blockSize)
+    for (y <- 0 until blocks.size) {
+      for (x <- 0 until blocks(y).size) {
+        blocks(y)(x) = new Block(x*blockSize, y*blockSize, blockSize, blockSize, 0, 0)
       }
     }
   }
-  
+
   def draw(g: Graphics) {
-    for (x <- 0 until blocks.size) {
-      for (y <- 0 until blocks(x).size) {
-        blocks(x)(y).draw(g)
+    for (y <- 0 until blocks.size) {
+      for (x <- 0 until blocks(y).size) {
+        blocks(y)(x).draw(g)
       }
     }
   }
-  
+
 }
