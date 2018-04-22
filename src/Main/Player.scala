@@ -2,7 +2,7 @@ package Main
 
 object Player {
   
-  var lives = 5
+  var lives = 3
   var money = 100
   var score = 0
   

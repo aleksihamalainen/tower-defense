@@ -11,13 +11,23 @@ object Map {
   val road = 1
   val grass = 0
   val roadEnd = 2
+  val tower = 3
+  val trash = 4
 
   val blocks = Array.ofDim[Block](height, width)
 
   def createMap = {
     for (y <- 0 until blocks.size) {
       for (x <- 0 until blocks(y).size) {
-        blocks(y)(x) = new Block(x*blockSize, y*blockSize, blockSize, blockSize, 0, 0)
+        blocks(y)(x) = new Block(x * blockSize, y * blockSize, blockSize, blockSize, 0, 0)
+      }
+    }
+  }
+  
+  def monsterFight = {
+    for (y <- 0 until blocks.size) {
+      for (x <- 0 until blocks(y).size) {
+        blocks(y)(x).fight
       }
     }
   }
@@ -26,6 +36,11 @@ object Map {
     for (y <- 0 until blocks.size) {
       for (x <- 0 until blocks(y).size) {
         blocks(y)(x).draw(g)
+      }
+    }
+    for (y <- 0 until blocks.size) {
+      for (x <- 0 until blocks(y).size) {
+        blocks(y)(x).shoot(g)
       }
     }
   }
