@@ -3,13 +3,13 @@ package Main
 import java.awt._
 import javax.imageio.ImageIO
 import java.io.File
+import java.awt.image.BufferedImage
 
 class Monster extends Rectangle {
 
   val monsterSize = Map.blockSize
   var inGame = false
   var hasSpawned = false
-  val monsterImage = ImageIO.read(new File("resource/monster.png"))
   var up = 0
   var down = 1
   var right = 2
@@ -18,8 +18,8 @@ class Monster extends Rectangle {
   var walk = 0
   var xCoord = 0
   var yCoord = 0
-  val maxHealth = 100
-  var currentHealth = 100
+  var maxHealth = 100.0
+  var currentHealth = 100.0
 
   def spawn = {
     for (y <- 0 until Map.blocks.size) {
@@ -32,12 +32,12 @@ class Monster extends Rectangle {
     inGame = true
     hasSpawned = true
   }
-  
+
   def deleteMonster = {
     inGame = false
   }
 
-  def move {
+  def move { //Pathfinding
     var hasUp = false
     var hasDown = false
     var hasLeft = false
@@ -93,6 +93,7 @@ class Monster extends Rectangle {
       if (Map.blocks(yCoord)(xCoord + 1).grassID == Map.roadEnd) {
         deleteMonster
         Player.lives -= 1
+
       }
 
       hasUp = false
@@ -102,7 +103,7 @@ class Monster extends Rectangle {
       walk = 0
     }
   }
-  
+
   def isDead = {
     if (inGame == true) {
       false
@@ -110,22 +111,35 @@ class Monster extends Rectangle {
       true
     }
   }
-  
-  def loseHealth = {
-    currentHealth -= 1
+
+  def loseHealth = { //The amount of health that is lost depends on the tower
+    for (y <- 0 until Map.blocks.size) {
+      for (x <- 0 until Map.blocks(y).size) {
+        if (Map.blocks(y)(x).grassID == Map.tower1) {
+          currentHealth -= 0.5
+        } else if (Map.blocks(y)(x).grassID == Map.tower2) {
+          currentHealth -= 1
+        } else if (Map.blocks(y)(x).grassID == Map.tower3) {
+          currentHealth -= 1.5
+        } else if (Map.blocks(y)(x).grassID == Map.tower4) {
+          currentHealth -= 2
+        }
+      }
+    }
     if (currentHealth <= 0) {
       deleteMonster
     }
   }
 
-  def draw(g: Graphics) = {
+  def draw(g: Graphics) = { //Draws monsters and their health bars
     val healthHeight = 5
     val healthSpace = 2
+    val monsterImage = ImageIO.read(new File("resource/monster.png"))
     g.drawImage(monsterImage, x, y, width, height, null)
     g.setColor(new Color(180, 50, 50))
     g.fillRect(x, y - healthSpace - healthHeight, monsterSize, healthHeight)
     g.setColor(new Color(50, 180, 50))
-    g.fillRect(x, y - healthSpace - healthHeight, monsterSize * currentHealth / maxHealth, healthHeight)
+    g.fillRect(x, y - healthSpace - healthHeight, (monsterSize * currentHealth / maxHealth).toInt, healthHeight)
     g.setColor(new Color(0, 0, 0))
     g.drawRect(x, y - healthSpace - healthHeight, monsterSize, healthHeight)
   }

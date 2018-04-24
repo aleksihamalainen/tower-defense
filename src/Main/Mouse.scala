@@ -7,7 +7,7 @@ import java.awt.event.MouseListener
 import java.awt.event.MouseMotionListener
 import java.awt.event.KeyEvent
 
-class Mouse extends MouseMotionListener with MouseListener with KeyListener {
+class Mouse extends MouseMotionListener with MouseListener {
 
   def mouseClicked(e: MouseEvent) = {
 
@@ -35,18 +35,6 @@ class Mouse extends MouseMotionListener with MouseListener with KeyListener {
 
   def mouseMoved(e: MouseEvent) = {
     GamePanel.mouse = new Point(e.getX, e.getY)
-  }
-  
-  def keyPressed(e: KeyEvent) = {
-    
-  }
-  
-  def keyReleased(e: KeyEvent) = {
-    
-  }
-  
-  def keyTyped(e: KeyEvent) = {
-    
   }
 
 }

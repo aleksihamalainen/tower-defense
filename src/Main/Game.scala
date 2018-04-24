@@ -10,7 +10,6 @@ object Game extends JFrame {
     val width = 800
     val height = 600
     val size = new Dimension(width, height)
-    //val panel = new GamePanel
     setSize(size)
     setResizable(false)
     setLocationRelativeTo(null)
